@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <title>Layout</title>
+    <link rel="stylesheet"
+          th:href="@{/css/bootstrap.min.css}"
+          href="../../css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand">
+                Tado Issues Management Tool
+            </a>
+            <ul class="nav">
+                <li>
+                    <a th:href="@{/}" href="list.html">
+                        View all
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/issues/create}" href="create.html">
+                        Create new issue
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="pull-right"
+             th:if="${loggedInUser != null and loggedInUser.loggedIn}"
+             th:text="${'Logged in as ' + loggedInUser.username}">
+                Logged in as Tom!
+        </div>
+    </div>
+
+    <div class="alert alert-success"
+         th:if="${globalMessage}"
+         th:text="${globalMessage}">
+        Some Success message
+    </div>
+    <h1 layout:fragment="header">Layout</h1>
+    <div layout:fragment="content">
+        Fake content
+    </div>
+</div>
+</body>
+</html>

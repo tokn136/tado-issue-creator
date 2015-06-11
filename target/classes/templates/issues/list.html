@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <title>Tado issue creator : View all</title>
+</head>
+<body>
+<h1 layout:fragment="header">Tado issue creator : View all</h1>
+<div layout:fragment="content" class="container">
+    <div class="pull-right">
+        <a href="create.html" th:href="@{/issues/create}">Create Issue</a>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <td>Issue number</td>
+            <td>Title</td>
+            <td>Body</td>
+            <td>URL</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${issues.empty}">
+            <td colspan="4">
+                No Issues
+            </td>
+        </tr>
+        <tr th:each="issue : ${issues}">
+            <td th:text="${issue.number}">1</td>
+            <td th:text="${issue.title}">1</td>
+            <td th:text="${issue.body}">1</td>
+            <td>
+                <a href="${issue.url}"
+                   th:href="${'/issues/' + issue.number}"
+                   th:text="${issue.url}">
+                    issue url
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
