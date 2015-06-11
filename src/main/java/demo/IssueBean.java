@@ -1,5 +1,6 @@
 package demo;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.json.simple.JSONObject;
 
 import java.util.Arrays;
@@ -9,8 +10,6 @@ import java.util.List;
  * Created by Thomas on 6/11/2015.
  */
 public class IssueBean {
-    private final List<String> JSON_KEYS = Arrays.asList("title", "body", "number", "html_url");
-
     private Integer number;
     private String title;
     private String body;
@@ -22,21 +21,8 @@ public class IssueBean {
     public IssueBean(JSONObject jsonObject) {
         title = getStringValueForKey(jsonObject, "title");
         body = getStringValueForKey(jsonObject, "body");
-        //number = Integer.parseInt(getLongValueForKey(jsonObject, "number").intValue());
         number = getLongValueForKey(jsonObject, "number").intValue();
         url = getStringValueForKey(jsonObject, "html_url");
-    }
-
-    public IssueBean(String title, String body) {
-        this.title = title;
-        this.body = body;
-    }
-
-    public IssueBean(Integer number, String title, String body, String url) {
-        this.number = number;
-        this.title = title;
-        this.body = body;
-        this.url = url;
     }
 
     public String getTitle() {
@@ -61,6 +47,14 @@ public class IssueBean {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public JSONObject getJSON(){

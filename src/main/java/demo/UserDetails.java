@@ -1,21 +1,22 @@
 package demo;
 
+import org.json.simple.JSONObject;
+
 /**
  * Created by Thomas on 6/11/2015.
  */
-public class UserBean {
-    private boolean loggedIn;
+public class UserDetails extends GitHubConnector{
+    private Boolean loggedIn;
     private String username;
     private String password;
     private String repository = "tado-issue-creator";
 
-    public UserBean() {
+
+    public UserDetails() {
     }
 
-    public UserBean(String username, String password, String repository) {
-        this.username = username;
-        this.password = password;
-        this.repository = repository;
+    public void initGitHubConnection(){
+        init(this);
     }
 
     public String getUsername() {
@@ -43,10 +44,18 @@ public class UserBean {
     }
 
     public boolean isLoggedIn() {
+        if(loggedIn == null) {
+            loggedIn = getUserCredentialsCorrect(username, password);
+        }
         return loggedIn;
     }
 
-    public void setIsLoggedIn(boolean isLoggedIn) {
-        this.loggedIn = isLoggedIn;
+    public void updateIssue(JSONObject issueBean, Integer number) throws Exception {
+        updateIssue(issueBean, number, username, password);
     }
+
+    public void createNewIssue(JSONObject issueBean) throws Exception {
+        createNewIssue(issueBean, username, password);
+    }
+
 }

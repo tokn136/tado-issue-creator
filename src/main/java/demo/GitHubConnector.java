@@ -10,24 +10,21 @@ import org.json.simple.JSONValue;
 public class GitHubConnector {
 
     private final static String GITHUB_URL = "https://api.github.com";
-    private final String gitHubUser;
+    private String gitHubUser;
     private String gitHubIssuesUrl;
-    private String gitHubBasicAuthentication;
     private String gitHubRepository;
 
-    public GitHubConnector(String gitHubUser, String gitHubRepository) {
-        this.gitHubUser = gitHubUser;
-        this.gitHubRepository = gitHubRepository;
+    public GitHubConnector() {
     }
 
-    public GitHubConnector(UserBean userBean) {
-        this.gitHubUser = userBean.getUsername();
-        this.gitHubBasicAuthentication = HttpConnector.getBasicAuthenticationString(userBean.getUsername(),userBean.getPassword());
-        this.gitHubRepository = userBean.getRepository();
+    public void init(UserDetails userDetails) {
+        this.gitHubUser = userDetails.getUsername();
+        this.gitHubRepository = userDetails.getRepository();
         this.gitHubIssuesUrl = GITHUB_URL + "/repos/" + gitHubUser + "/" + gitHubRepository + "/issues";
     }
 
-    public boolean getUserCredentialsCorrect(){
+    public static boolean getUserCredentialsCorrect(String username, String password){
+        String gitHubBasicAuthentication = HttpConnector.getBasicAuthenticationString(username, password);
         boolean userCredentialsCorrect = false;
         try {
             int responseCode = HttpConnector.sendGetResponseCodeOnly(GITHUB_URL, gitHubBasicAuthentication);
@@ -62,15 +59,17 @@ public class GitHubConnector {
         return issuesList;
     }
 
-    public void createNewIssue(JSONObject issueBean) throws Exception{
+    public void createNewIssue(JSONObject issueBean, String userName, String password) throws Exception{
+        String gitHubBasicAuthentication = HttpConnector.getBasicAuthenticationString(userName, password);
         String issuePayload = issueBean.toJSONString();
         HttpConnector.sendPost(gitHubIssuesUrl, issuePayload, gitHubBasicAuthentication);
     }
 
-    public void updateIssue(JSONObject issueBean, Integer number) throws Exception{
+    public void updateIssue(JSONObject issueBean, Integer number, String userName, String password) throws Exception{
+        String gitHubBasicAuthentication = HttpConnector.getBasicAuthenticationString(userName, password);
         String issuePayload = issueBean.toJSONString();
         String updateIssueUrl = gitHubIssuesUrl + "/" + number;
-        HttpConnector.sendPatch(gitHubIssuesUrl, issuePayload, updateIssueUrl);
+        HttpConnector.sendPatch(updateIssueUrl, issuePayload, gitHubBasicAuthentication);
     }
 
 }

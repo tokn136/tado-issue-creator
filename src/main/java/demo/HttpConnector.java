@@ -108,6 +108,7 @@ public class HttpConnector {
         System.out.println(response.toString());
         return response.toString();
     }
+
     public static String sendPatch(String url, String postPayload, String authenticationString) throws Exception {
         // TODO JDK doesn't support PATCH, change to Apache
 
