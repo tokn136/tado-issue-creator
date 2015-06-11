@@ -105,12 +105,20 @@ public class IssueCreatorController {
             return new ModelAndView("issues/form", "formErrors", result.getAllErrors());
         }
 
-        if (filledIssueBean != null && filledIssueBean.getNumber() > 0){
-            gitHubConnector.updateIssue(filledIssueBean.getJSON(), filledIssueBean.getNumber());
-            redirect.addFlashAttribute("globalMessage", "Successfully update issue!");
+        if (filledIssueBean != null && filledIssueBean.getNumber() != null && filledIssueBean.getNumber() > 0){
+            try {
+                gitHubConnector.updateIssue(filledIssueBean.getJSON(), filledIssueBean.getNumber());
+                redirect.addFlashAttribute("globalMessage", "Successfully update issue!");
+            } catch (Exception e){
+                redirect.addFlashAttribute("globalMessage", "Could not update issue!");
+            }
         } else{
-            gitHubConnector.createNewIssue(filledIssueBean.getJSON());
-            redirect.addFlashAttribute("globalMessage", "Successfully created a new issue!");
+            try {
+                gitHubConnector.createNewIssue(filledIssueBean.getJSON());
+                redirect.addFlashAttribute("globalMessage", "Successfully created a new issue!");
+            } catch (Exception e){
+                redirect.addFlashAttribute("globalMessage", "Could not create issue!");
+            }
         }
         return new ModelAndView("redirect:/issues/list");
 

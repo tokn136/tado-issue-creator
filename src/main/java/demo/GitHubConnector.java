@@ -62,22 +62,15 @@ public class GitHubConnector {
         return issuesList;
     }
 
-    public void createNewIssue(JSONObject issueBean){
-        try {
-            String issuePayload = issueBean.toJSONString();
-            HttpConnector.sendPost(gitHubIssuesUrl, issuePayload, gitHubBasicAuthentication);
-        } catch (Exception e) {
-            System.out.println("Couldn't create issue for user: " + gitHubUser + " and repository: " + gitHubRepository);
-        }
+    public void createNewIssue(JSONObject issueBean) throws Exception{
+        String issuePayload = issueBean.toJSONString();
+        HttpConnector.sendPost(gitHubIssuesUrl, issuePayload, gitHubBasicAuthentication);
     }
-    public void updateIssue(JSONObject issueBean, Integer number){
-        try {
-            String issuePayload = issueBean.toJSONString();
-            String updateIssueUrl = gitHubIssuesUrl + "/" + number;
-            HttpConnector.sendPatch(gitHubIssuesUrl, issuePayload, updateIssueUrl);
-        } catch (Exception e) {
-            System.out.println("Couldn't create issue for user: " + gitHubUser + " and repository: " + gitHubRepository);
-        }
+
+    public void updateIssue(JSONObject issueBean, Integer number) throws Exception{
+        String issuePayload = issueBean.toJSONString();
+        String updateIssueUrl = gitHubIssuesUrl + "/" + number;
+        HttpConnector.sendPatch(gitHubIssuesUrl, issuePayload, updateIssueUrl);
     }
 
 }
